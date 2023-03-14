@@ -137,13 +137,22 @@ body {
         border: 0;
         height: 40px;
         border-radius: 8px;
-        padding-left: 20px;
+        padding: 0 20px;
         color: #ece7fd;
       }
 
       .bt {
         flex-shrink: 0;
         height: 40px;
+      }
+
+      .mike {
+        width: 40px;
+        padding: 0 8px;
+
+        &[data-active="true"] {
+            background: linear-gradient(to right, red, rgb(255, 84, 84), rgb(255, 122, 122));
+        }
       }
     }
 

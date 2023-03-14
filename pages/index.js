@@ -4,18 +4,27 @@ import { Inter } from "next/font/google";
 import Dictaphone from "@/components/Dictaphone";
 import { useWeb3React } from "@web3-react/core";
 import { injected, walletconnect } from "../components/wallet/Connectors";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Logo from "../public/logo.png";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { active, account, library, connector, activate, deactivate } =
     useWeb3React();
+    const {
+      transcript,
+      listening,
+      resetTranscript,
+      browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
 
   const inputRef = useRef();
+
   const [chatResponses, setChatResponses] = useState([]);
   const [userRequest, setUserRequest] = useState();
+  const [mikeActive, setMikeActive] = useState(false);
 
   async function connect(connector) {
     try {
@@ -91,13 +100,16 @@ export default function Home() {
         ]
       });
     }
-
-
   }
 
   async function handleChange(evt) {
     setUserRequest(evt.target.value);
   }
+
+  useEffect(() => {
+    console.log('ici', transcript);
+    setUserRequest(transcript);
+  }, [transcript]);
 
   return (
     <>
@@ -144,10 +156,14 @@ export default function Home() {
                 placeholder="What's your question ?"
                 onChange={handleChange}
                 ref={inputRef}
+                value={userRequest}
               />
               <button type="submit" className="bt">
                 Ask me
               </button>
+              <div className="bt mike" data-active={listening} onClick={listening ? SpeechRecognition.stopListening : SpeechRecognition.startListening}>
+              <svg xmlns="http://www.w3.org/2000/svg" enableackground="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#ffffff"><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><g/><g><path d="M12,14c1.66,0,3-1.34,3-3V5c0-1.66-1.34-3-3-3S9,3.34,9,5v6C9,12.66,10.34,14,12,14z"/><path d="M17,11c0,2.76-2.24,5-5,5s-5-2.24-5-5H5c0,3.53,2.61,6.43,6,6.92V21h2v-3.08c3.39-0.49,6-3.39,6-6.92H17z"/></g></g></svg>
+              </div>
             </form>
           </div>
         ) : (
@@ -177,8 +193,6 @@ export default function Home() {
             </div>
           </div>
         )}
-
-        {/* <Dictaphone/> */}
       </div>
     </>
   );
