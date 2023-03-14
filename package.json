@@ -19,6 +19,7 @@
     "react-dom": "18.2.0",
     "react-speech-recognition": "^3.10.0",
     "regenerator-runtime": "^0.13.11",
+    "sass": "^1.59.2",
     "web3": "^1.8.2"
   }
 }
