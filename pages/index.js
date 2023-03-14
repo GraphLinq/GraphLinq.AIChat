@@ -1,14 +1,10 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "next/font/google";
-import Dictaphone from "@/components/Dictaphone";
 import { useWeb3React } from "@web3-react/core";
 import { injected, walletconnect } from "../components/wallet/Connectors";
 import { useEffect, useRef, useState } from "react";
 import Logo from "../public/logo.png";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { active, account, library, connector, activate, deactivate } =
@@ -24,7 +20,8 @@ export default function Home() {
 
   const [chatResponses, setChatResponses] = useState([]);
   const [userRequest, setUserRequest] = useState();
-  const [mikeActive, setMikeActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   async function connect(connector) {
     try {
@@ -59,6 +56,8 @@ export default function Home() {
     }, 500);
 
     try {
+      setIsLoading(true);
+
       const res = await fetch(
         "https://api-hosted.graphlinq.io/d0f19a36cc3bd4f60fe21bdd4f69879d6b11ce7b2381c44ee0c29cc71a3561e8/chat?chat_id=" +
           account,
@@ -85,8 +84,10 @@ export default function Home() {
           },
         ]
       });
-    } catch (error) {
 
+      let utterance = new SpeechSynthesisUtterance(res.response);
+      speechSynthesis.speak(utterance);
+    } catch (error) {
       setChatResponses((current) => {
         const responses = [...current];
         responses.pop();
@@ -99,6 +100,11 @@ export default function Home() {
           },
         ]
       });
+
+      let utterance = new SpeechSynthesisUtterance("I am currently not available, please try again later.");
+      speechSynthesis.speak(utterance);
+    } finally {
+        setIsLoading(false);
     }
   }
 
@@ -157,10 +163,10 @@ export default function Home() {
                 ref={inputRef}
                 value={userRequest}
               />
-              <button type="submit" className="bt">
+              <button type="submit" className="bt" disabled={userRequest === '' || isLoading}>
                 Ask me
               </button>
-              <div className="bt mike" data-active={listening} onClick={listening ? SpeechRecognition.stopListening : SpeechRecognition.startListening}>
+              <div className="bt mike" disabled={isLoading} data-active={listening} onClick={listening ? SpeechRecognition.stopListening : SpeechRecognition.startListening}>
               <svg xmlns="http://www.w3.org/2000/svg" enableackground="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#ffffff"><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><g/><g><path d="M12,14c1.66,0,3-1.34,3-3V5c0-1.66-1.34-3-3-3S9,3.34,9,5v6C9,12.66,10.34,14,12,14z"/><path d="M17,11c0,2.76-2.24,5-5,5s-5-2.24-5-5H5c0,3.53,2.61,6.43,6,6.92V21h2v-3.08c3.39-0.49,6-3.39,6-6.92H17z"/></g></g></svg>
               </div>
             </form>
