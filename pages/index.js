@@ -107,7 +107,6 @@ export default function Home() {
   }
 
   useEffect(() => {
-    console.log('ici', transcript);
     setUserRequest(transcript);
   }, [transcript]);
 
