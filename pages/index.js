@@ -59,7 +59,8 @@ export default function Home() {
       setIsLoading(true);
 
       const res = await fetch(
-        "https://api-hosted.graphlinq.io/d0f19a36cc3bd4f60fe21bdd4f69879d6b11ce7b2381c44ee0c29cc71a3561e8/chat?chat_id=" +
+        
+        "https://api-hosted.graphlinq.io/15a0b765dc909a777cec9bc7b7ce3708524496653b9d717f1a454857dc67883a/chat?chat_id=" +
           account,
         {
           method: "POST",
@@ -131,7 +132,7 @@ export default function Home() {
         />
       </Head>
       <div className="glq-home">
-        <Image src={Logo} className="glq-home-logo" />
+        <Image src="https://i.imgur.com/8rtUmzZ.png" className="glq-home-logo" />
 
         {active ? (
           <div className="glq-home-chat">

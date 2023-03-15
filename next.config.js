@@ -1,6 +1,12 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-}
-
-module.exports = nextConfig
+module.exports = {
+  trailingSlash: true,
+  poweredByHeader: false,
+  async exportPathMap() {
+    return {
+      '/': { page: '/' },
+    };
+  },
+  images: {
+    unoptimized: true,
+  },
+};
