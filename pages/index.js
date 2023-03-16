@@ -132,7 +132,7 @@ export default function Home() {
         />
       </Head>
       <div className="glq-home">
-        <Image src="https://i.imgur.com/8rtUmzZ.png" className="glq-home-logo" />
+        <Image src="https://i.imgur.com/8rtUmzZ.png" width="500" height="57" className="glq-home-logo" />
 
         {active ? (
           <div className="glq-home-chat">
@@ -175,12 +175,10 @@ export default function Home() {
         ) : (
           <div className="glq-home-intro">
             <div className="glq-home-title dg">
-              Welcome to <span>GraphLinq Chat</span>
+              Introducing <span>GraphLinq Chat</span>
             </div>
             <div className="glq-home-desc">
-              Alex is the public library of the internet, powered by OpenAI
-              models. Ask any question, and it will find an answer. Give it a
-              task, and it will deliver. Embrace the AI revolution.
+              Your Personal Assistant with the Power of OpenAI, Graphlinq Engine & Speech-to-Text
             </div>
 
             <div className="glq-home-connect">
